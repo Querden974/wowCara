@@ -1,90 +1,39 @@
 import { useState, useEffect } from "react";
+import getAccessToken from "../functions/getAccessToken";
+import getCharacterInfo from "../functions/getCharacterInfo";
+import getCharacterApp from "../functions/getCharacterApp";
+
+const colors = {
+  "warrior" : "text-warrior",
+  "paladin" : "text-paladin",
+  "hunter" : "text-hunter",
+  "rogue" : "text-rogue",
+  "priest" : "text-priest",
+  "deathknight" : "text-deathknight",
+  "shaman" : "text-shaman",
+  "mage" : "text-mage",
+  "warlock" : "text-warlock",
+  "druid" : "text-druid",
+  "demonhunter" : "text-demonhunter",
+  "evoker" : "text-evoker",
+  "monk" : "text-monk"
+}
+
 
 function SearchChar() {
   const [characterName, setCharacterName] = useState(""); // Stocker la valeur de l'input pour le personnage
   const [serverName, setServerName] = useState(""); // Stocker la valeur de l'input pour le serveur
   const [characterData, setCharacterData] = useState(null); // Stocker les données récupérées du personnage
   const [error, setError] = useState(null); // Gérer les erreurs
-  const [render, setRender] = useState(null)
-  const [token, setToken] = useState(null);
+  const [render, setRender] = useState(null);
+
 
 
   const clientId = "8f136d01a5984067a9a34b3274b196bf";
   const clientSecret = "uG05W1R1PfFcBo79cd70EpANMsvU4eSe";
   const tokenUrl = `https://eu.battle.net/oauth/token`;
+  const baseUrl = `https://eu.api.blizzard.com`;
 
-  // Fonction pour obtenir le token d'accès
-  async function getAccessToken() {
-    try {
-      const response = await fetch(tokenUrl, {
-        method: 'POST',
-        headers: {
-          'Authorization': 'Basic ' + btoa(clientId + ':' + clientSecret),
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'grant_type=client_credentials'
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      //console.log("Access token obtained:", data.access_token);
-      setToken(data.access_token);
-
-
-
-      
-    } catch (error) {
-      //console.error("Error obtaining access token:", error);
-      throw error;
-    }
-  }
-  getAccessToken();
-
-  // Fonction pour obtenir les informations du personnage
-  async function getCharacterInfo(realm, characterName) {
-    console.log(token);
-    const apiUrl = `https://eu.api.blizzard.com/profile/wow/character/${realm}/${characterName}?namespace=profile-eu&locale=fr_FR`;
-    
-    try {
-        const response = await fetch(apiUrl, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        
-        if (!response.ok) {
-            throw new Error(`Erreur ${response.status}: ${response.statusText}`);
-        }
-
-        const characterData = await response.json();
-        console.log(characterData);
-        return characterData;
-    } catch (error) {
-        console.error('Erreur lors de la récupération des données du personnage:', error);
-    }
-}
-
-  async function getCharacterApp(realm, name) {
-    const apiUrl = `https://eu.api.blizzard.com/profile/wow/character/${realm}/${name}/character-media?namespace=profile-eu&locale=fr_FR`;
-    
-    const response = await fetch(apiUrl, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error('Erreur lors de la récupération des informations du personnage.');
-    }
-
-    const characterApp = await response.json();
-    return characterApp;
-  }
 
   // Fonction appelée lors du clic sur le bouton "Set"
   async function changeText() {
@@ -95,24 +44,34 @@ function SearchChar() {
     
     setError(null);
 
+    // Si le personnage est déjà affiché, on le supprime
     if (render) {
       const imageRender = document.getElementById("imageRender");
-      const imageDiv = document.getElementById("imageDiv");
+      const imageDiv = document.getElementById("imageDiv"); 
+      const guildMain = document.getElementById("guildMain");
+      const nameMain = document.getElementById("nameMain");
       if (imageRender) imageRender.remove();
       if (imageDiv) imageDiv.remove();
+      if (guildMain) guildMain.remove();
+      if (nameMain) nameMain.remove();
       setRender(false);
     }
 
+    // On récupère les données du personnage
     try {
-      
+      const token = await getAccessToken();
       const realm = serverName.toLowerCase();
       const name = characterName.toLowerCase();
+
+      const [ data, dataApp] = await Promise.all([
+        getCharacterInfo(token, realm, name),
+        getCharacterApp(token, realm, name)
+      ]);
+
       
-      const data = await getCharacterInfo(realm, name);
-      const dataApp = await getCharacterApp(realm, name);
-      console.log("Character data:", dataApp);
       setCharacterData(data);
 
+      
       // Utiliser des références React ou vérifier l'existence des éléments avant de les manipuler
       const nomPersonnage = document.getElementById("nomPersonnage");
       const servPersonnage = document.getElementById("servPersonnage");
@@ -121,22 +80,43 @@ function SearchChar() {
       nomPersonnage.textContent = data.name;
       servPersonnage.textContent = data.realm.name;
       ilvlPersonnage.textContent = data.average_item_level;
-
-      const imageSrc = dataApp.assets.find(asset => asset.key === 'main-raw')?.value;
-      const Info = document.getElementById('characterInfo');
-
       
+
+      // On récupère l'image du personnage
+      const imageSrc = dataApp.assets.find(asset => asset.key === 'main-raw')?.value;
+      const Render = document.getElementById('characterRender');
+      
+      // On crée les éléments pour afficher le personnage
+      const color = data.character_class.name.toLowerCase().replace(/\s+/g, '');
+      const nameMain = document.createElement("p");
+      nameMain.textContent = data.name;
+      nameMain.className = `flex relative text-4xl font-bold justify-center top-[100px] font-mono `;
+      nameMain.classList.add(colors[color]);
+      nameMain.id = "nameMain";
+
+      const guildMain = document.createElement("p");
+      guildMain.textContent = `<${data.guild.name}>`;
+      guildMain.className = `flex relative text-1xl font-bold justify-center top-[100px]  font-mono `;
+      guildMain.classList.add(colors[color]);
+      guildMain.id = "guildMain";
+     
+
         const imageDiv = document.createElement("div");
-        imageDiv.className = "w-[600px] h-auto overflow-hidden";
+        imageDiv.className = "w-full h-full ";
         imageDiv.id = "imageDiv";
+        imageDiv.className = "flex flex-col justify-center items-center";
 
         const image = document.createElement("img");
         image.src = imageSrc;
         image.id = "imageRender";
-        image.className = "flex relative object-cover w-full h-full -left-[150px] -top-[50px]";
+        image.className = "flex relative object-cover w-[600px] h-[850px] -top-[60px] ";
 
+      
+        
         imageDiv.append(image);
-        Info.append(imageDiv);
+        Render.append(nameMain);
+        Render.append(guildMain);
+        Render.append(imageDiv);
         setRender(true);
       
 
