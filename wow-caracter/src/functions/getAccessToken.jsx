@@ -1,8 +1,8 @@
-const clientId = "8f136d01a5984067a9a34b3274b196bf";
-const clientSecret = "uG05W1R1PfFcBo79cd70EpANMsvU4eSe";
-const tokenUrl = `https://eu.battle.net/oauth/token`;
+const clientId = import.meta.env.VITE_CLIENT_ID;
+const clientSecret = import.meta.env.VITE_CLIENT_SECRET;
 
-async function getAccessToken() {
+async function getAccessToken(region) {
+  const tokenUrl = `https://${region}.battle.net/oauth/token`;
     try {
       const response = await fetch(tokenUrl, {
         method: 'POST',

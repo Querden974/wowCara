@@ -1,8 +1,8 @@
-const baseUrl = `https://eu.api.blizzard.com`;
 
 // Fonction pour obtenir les informations du personnage
-async function getCharacterInfo(token,realm, characterName) {
-    const apiUrl = `${baseUrl}/profile/wow/character/${realm}/${characterName}?namespace=profile-eu&locale=en_GB`;
+async function getCharacterInfo(token,region,realm, characterName) {
+  const baseUrl = `https://${region}.api.blizzard.com`;
+    const apiUrl = `${baseUrl}/profile/wow/character/${realm}/${characterName}?namespace=profile-${region}&locale=en_GB`;
     
     try {
       

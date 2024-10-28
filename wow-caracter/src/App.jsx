@@ -4,13 +4,15 @@ import viteLogo from '/vite.svg'
 import Card from "./components/card"
 import SearchChar from "./components/searchChar"
 import './index.css'
+import SelectMenu from "./components/selectMenu"
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-      <SearchChar/>
+      <SelectMenu/>
+
       <Card CSS='w-5 flex justify-center items-center' />
     </>
   )

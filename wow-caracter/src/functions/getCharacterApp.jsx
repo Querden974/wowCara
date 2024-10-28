@@ -1,6 +1,6 @@
-const baseUrl = `https://eu.api.blizzard.com`;
 // Fonction pour obtenir les images du personnage
-async function getCharacterApp(token,realm, name) {
+async function getCharacterApp(token,region,realm, name) {
+  const baseUrl = `https://${region}.api.blizzard.com`;
   const apiUrl = `${baseUrl}/profile/wow/character/${realm}/${name}/character-media?namespace=profile-eu&locale=en_GB`;
   
   const response = await fetch(apiUrl, {

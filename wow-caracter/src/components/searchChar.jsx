@@ -27,14 +27,6 @@ function SearchChar() {
   const [error, setError] = useState(null); // Gérer les erreurs
   const [render, setRender] = useState(null);
 
-
-
-  const clientId = "8f136d01a5984067a9a34b3274b196bf";
-  const clientSecret = "uG05W1R1PfFcBo79cd70EpANMsvU4eSe";
-  const tokenUrl = `https://eu.battle.net/oauth/token`;
-  const baseUrl = `https://eu.api.blizzard.com`;
-
-
   // Fonction appelée lors du clic sur le bouton "Set"
   async function changeText() {
     if (!serverName || !characterName) {
@@ -88,12 +80,15 @@ function SearchChar() {
       
       // On crée les éléments pour afficher le personnage
       const color = data.character_class.name.toLowerCase().replace(/\s+/g, '');
+
+      // On crée les éléments pour afficher le nom et le guild du personnage
       const nameMain = document.createElement("p");
       nameMain.textContent = data.name;
       nameMain.className = `flex relative text-4xl font-bold justify-center top-[100px] font-mono `;
       nameMain.classList.add(colors[color]);
       nameMain.id = "nameMain";
 
+      // On crée les éléments pour afficher le guild du personnage
       const guildMain = document.createElement("p");
       guildMain.textContent = `<${data.guild.name}>`;
       guildMain.className = `flex relative text-1xl font-bold justify-center top-[100px]  font-mono `;
@@ -101,22 +96,25 @@ function SearchChar() {
       guildMain.id = "guildMain";
      
 
+      // On crée les éléments pour afficher l'image du personnage
         const imageDiv = document.createElement("div");
         imageDiv.className = "w-full h-full ";
         imageDiv.id = "imageDiv";
         imageDiv.className = "flex flex-col justify-center items-center";
 
+      // On crée l'image du personnage
         const image = document.createElement("img");
         image.src = imageSrc;
         image.id = "imageRender";
         image.className = "flex relative object-cover w-[600px] h-[850px] -top-[60px] ";
 
       
-        
+        // On ajoute les éléments pour afficher le nom et le guild du personnage à l'élément Render        
         imageDiv.append(image);
         Render.append(nameMain);
         Render.append(guildMain);
         Render.append(imageDiv);
+
         setRender(true);
       
 

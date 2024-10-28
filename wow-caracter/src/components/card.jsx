@@ -2,7 +2,7 @@ function Card(CSS="") {
     return (
         <>
         
-        <div className="bg-primary py-16">
+        <div className="py-16">
             <div className="mx-auto max-w-2xl px-6 lg:max-w-7xl lg:px-8">
 
                 <p className="mx-auto mt-2 max-w-lg text-balance text-center text-4xl font-semibold tracking-tight text-gray-950 sm:text-5xl">
@@ -47,11 +47,20 @@ function Card(CSS="") {
                     </div>
                     <div className="relative lg:row-span-2">
                         <div className="absolute inset-px rounded-lg bg-transparent lg:rounded-l-[2rem]"></div>
-                        <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] lg:rounded-l-[calc(2rem+1px)]">
+                        <div className="relative flex h-full flex-col  rounded-[calc(theme(borderRadius.lg)+1px)] lg:rounded-l-[calc(2rem+1px)]">
                             <div id='characterRender' className="relative px-8 pb-3 pt-8 sm:px-10 sm:pb-0 sm:pt-10 h-[700px] -top-[150px]">
 
-
-                                
+                                <p id="nameMain" className="flex relative text-4xl font-bold justify-center top-[100px] font-mono ">
+                                    
+                                </p>
+                                <p id="guildMain" className="flex relative text-1xl font-bold justify-center top-[100px]  font-mono">
+                                    
+                                </p>
+                                <div id="imageDiv" className="flex flex-col justify-center items-center">
+                                    <img id="imageRender" className="flex relative object-cover w-[600px] h-[850px] -top-[60px] " 
+                                    src="" 
+                                    alt="imageRender" />
+                                </div>
                             </div>
 
                         </div>
