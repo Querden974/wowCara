@@ -11,7 +11,16 @@ async function getCharacterApp(token,region,realm, name) {
   });
 
   if (!response.ok) {
+    if(response.status === 404){
+      Swal.fire({
+        title: "Personnage introuvable",
+        text: "Vérifiez le nom et le serveur",
+        icon: "question",
+        timer: 2000,
+        showConfirmButton: false,
+      });
     throw new Error('Erreur lors de la récupération des informations du personnage.');
+    }
   }
 
   const characterApp = await response.json();

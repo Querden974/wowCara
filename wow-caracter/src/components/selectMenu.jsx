@@ -4,7 +4,8 @@ import getServer from "../functions/getServer";
 import getCharacterInfo from "../functions/getCharacterInfo";
 import getCharacterApp from "../functions/getCharacterApp";
 import ShowInfo from "../functions/showInfo";
-
+import getRaiderIO from "../functions/getRaiderIO";
+import listDungeon from "../functions/getDungeons";
 function SelectDefault() {
     const [serverListExist, setServerListExist] = useState(null);
     const [servers, setServers] = useState([]);
@@ -31,11 +32,15 @@ function SelectDefault() {
         console.log(region, server, name);
         const accessToken = await getAccessToken(region);
         if(name !== ""){
-            const [data,dataApp] = await Promise.all([
+            const [data,dataApp,dataRaiderIO, dataDungeons] = await Promise.all([
                 getCharacterInfo(accessToken,region,server,name.toLowerCase()),
-                getCharacterApp(accessToken,region,server,name.toLowerCase())
+                getCharacterApp(accessToken,region,server,name.toLowerCase()),
+                getRaiderIO(region,server,name.toLowerCase()),
+                listDungeon(accessToken,region)
             ]);
-        ShowInfo(name,data,dataApp);
+        //console.log(dataDungeons);
+        //console.log(dataRaiderIO);
+        ShowInfo(name,data,dataApp, dataRaiderIO);
         } else {
             Swal.fire({
                 position: "center",
@@ -62,7 +67,9 @@ function SelectDefault() {
       id="region" 
       className="h-12 border border-gray-300 text-gray-600 text-base block w-fit py-2.5 px-4 focus:outline-none rounded-[calc(theme(borderRadius.lg)+1px)] lg:rounded-l-[calc(2rem+1px)]"
       value={region}
-      onChange={(e) => setRegion(e.target.value.toLowerCase())}
+      onChange={(e) => {setRegion(e.target.value.toLowerCase());
+                         serverList();
+                        console.log()}}
       >
       
       <option value="eu" defaultValue={true}>EU</option>
@@ -77,7 +84,7 @@ function SelectDefault() {
         {servers.map((serverNames, index)=> (
             <option 
             key={index} 
-            value={serverNames.replace(/\s+/g, '').toLowerCase()}
+            value={serverNames.replace(/\s+/g, '-').replace("'", '-').toLowerCase()}
           
             >
                 {serverNames}
@@ -90,7 +97,7 @@ function SelectDefault() {
           className="h-12 w-[210px] border border-gray-300 text-gray-600 text-base rounded-[calc(theme(borderRadius.lg)+1px)] block  py-2.5 px-4 focus:outline-none"
           placeholder="Personnage"
           value={name} // Lier l'input à l'état React
-          onChange={(e) => setName(e.target.value.replace(/\s+/g, ''))} // Mettre à jour l'état à chaque changement
+          onChange={(e) => setName(e.target.value)} // Mettre à jour l'état à chaque changement
         />
 
         <button

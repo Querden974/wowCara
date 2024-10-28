@@ -1,3 +1,5 @@
+import ProgressBar from "./progressBar"
+import DungeonCard from "./dungeonCard"
 function Card(CSS="") {
     return (
         <>
@@ -34,6 +36,13 @@ function Card(CSS="") {
                                             <dt className="font-medium text-gray-900">iLvl</dt>
                                             <dd id='ilvlPersonnage' className="text-gray-700 sm:col-span-2"></dd>
                                         </div>
+                                        <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+                                            <dt className="font-medium text-gray-900">Raid</dt>
+                                            <dd id='raidProgression' className="text-gray-700 sm:col-span-2">
+                                                <> <ProgressBar/></>
+                                               
+                                            </dd>
+                                        </div>
 
 
 
@@ -48,16 +57,17 @@ function Card(CSS="") {
                     <div className="relative lg:row-span-2">
                         <div className="absolute inset-px rounded-lg bg-transparent lg:rounded-l-[2rem]"></div>
                         <div className="relative flex h-full flex-col  rounded-[calc(theme(borderRadius.lg)+1px)] lg:rounded-l-[calc(2rem+1px)]">
-                            <div id='characterRender' className="relative px-8 pb-3 pt-8 sm:px-10 sm:pb-0 sm:pt-10 h-[700px] -top-[150px]">
+                            <div id='characterRender' className="relative   h-[700px] ">
 
-                                <p id="nameMain" className="flex relative text-4xl font-bold justify-center top-[100px] font-mono ">
+                                <p id="nameMain" className="flex  text-4xl font-bold justify-center  font-mono ">
                                     
                                 </p>
-                                <p id="guildMain" className="flex relative text-1xl font-bold justify-center top-[100px]  font-mono">
+                                <p id="guildMain" className="flex  text-1xl font-bold justify-center   font-mono">
                                     
                                 </p>
-                                <div id="imageDiv" className="flex flex-col justify-center items-center">
-                                    <img id="imageRender" className="flex relative object-cover w-[600px] h-[850px] -top-[60px] " 
+                                
+                                <div id="imageDiv" className="flex justify-center items-center  h-[500px] ">
+                                    <img id="imageRender" className="  object-cover w-[600px] h-[900px]  -top-10 " 
                                     src="" 
                                     alt="imageRender" />
                                 </div>
@@ -68,35 +78,9 @@ function Card(CSS="") {
                     </div>
                     
 
-
+                    <DungeonCard/>
                     
-                    <div className="relative lg:row-span-2">
-                        <div className="absolute inset-px rounded-lg bg-white max-lg:rounded-b-[2rem] lg:rounded-r-[2rem]"></div>
-                        <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] max-lg:rounded-b-[calc(2rem+1px)] lg:rounded-r-[calc(2rem+1px)]">
-                            <div className="px-8 pb-3 pt-8 sm:px-10 sm:pb-0 sm:pt-10">
-                                <p className="mt-2 text-lg/7 font-medium tracking-tight text-gray-950 max-lg:text-center">
-                                    Powerful APIs
-                                </p>
-                                <p className="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center">
-                                    Sit quis amet rutrum tellus ullamcorper ultricies libero dolor eget sem sodales gravida.
-                                </p>
-                            </div>
-                            <div className="relative min-h-[30rem] w-full grow">
-                                <div className="absolute bottom-0 left-10 right-0 top-10 overflow-hidden rounded-tl-xl bg-gray-900 shadow-2xl">
-                                    <div className="flex bg-gray-800/40 ring-1 ring-white/5">
-                                        <div className="-mb-px flex text-sm font-medium leading-6 text-gray-400">
-                                            <div className="border-b border-r border-b-white/20 border-r-white/10 bg-white/5 px-4 py-2 text-white">
-                                                NotificationSetting.jsx
-                                            </div>
-                                            <div className="border-r border-gray-600/10 px-4 py-2">App.jsx</div>
-                                        </div>
-                                    </div>
-                                    <div className="px-6 pb-14 pt-6">{/* Your code example */}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="pointer-events-none absolute inset-px rounded-lg shadow ring-1 ring-black/5 max-lg:rounded-b-[2rem] lg:rounded-r-[2rem]"></div>
-                    </div>
+                    
                 </div>
             </div>
         </div>

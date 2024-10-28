@@ -11,6 +11,10 @@ export default {
         primary : {
           DEFAULT: "#11113A",
         },
+        lfr : "#1eff00",
+        normal : "#0070dd",
+        heroic : "#a335ee",
+        mythic : "#ff8000",
         hunter : "#aad372",
         warlock : "#8788EE",
         druid : "#FF7C0A",
