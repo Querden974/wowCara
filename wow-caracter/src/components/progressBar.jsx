@@ -7,7 +7,7 @@ function ProgressBar(){
     }
     return(
         
-        <div className="flex flex-col h-fit relative top-2">
+        <div id="progressBar" className="flex flex-col h-fit relative top-2 hidden">
            
 
             

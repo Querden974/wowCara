@@ -7,7 +7,7 @@ function Card(CSS="") {
         <div className="py-16">
             <div className="mx-auto max-w-2xl px-6 lg:max-w-7xl lg:px-8">
 
-                <p className="mx-auto mt-2 max-w-lg text-balance text-center text-4xl font-semibold tracking-tight text-gray-950 sm:text-5xl">
+                <p className="mx-auto mt-2 max-w-lg text-balance text-center text-4xl font-semibold tracking-tight text-gray-950 sm:text-5xl z-10">
                     Warcraft Caracters
                 </p>
                 <div className="mt-10 grid gap-4 sm:mt-16 lg:grid-cols-3 lg:grid-rows-2 h-[600px]">
@@ -67,9 +67,10 @@ function Card(CSS="") {
                                 </p>
                                 
                                 <div id="imageDiv" className="flex justify-center items-center  h-[500px] ">
-                                    <img id="imageRender" className="  object-cover w-[600px] h-[900px]  -top-10 " 
+                                    <img id="imageRender" className="  object-cover w-[600px] h-[900px]  -top-10 z-0 hidden " 
                                     src="" 
-                                    alt="imageRender" />
+                                    alt="imageRender"
+                                     />
                                 </div>
                             </div>
 

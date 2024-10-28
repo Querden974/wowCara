@@ -29,7 +29,7 @@ function SelectDefault() {
     } 
 
     async function getInformations(){
-        console.log(region, server, name);
+        //console.log(region, server, name);
         const accessToken = await getAccessToken(region);
         if(name !== ""){
             const [data,dataApp,dataRaiderIO, dataDungeons] = await Promise.all([

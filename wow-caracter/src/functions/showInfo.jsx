@@ -47,7 +47,8 @@ async function ShowInfo(name, data, dataApp, rIO) {
       const normal = document.getElementById("normal");
       const heroic = document.getElementById("heroic");
       const mythic = document.getElementById("mythic");
-     
+      const progressBar = document.getElementById("progressBar");
+      progressBar.classList.remove("hidden");
 
       const normalNerubar = Math.round(nerubarPalace.normal_bosses_killed / nerubarPalace.total_bosses * 100);
       const heroicNerubar = Math.round(nerubarPalace.heroic_bosses_killed / nerubarPalace.total_bosses * 100);

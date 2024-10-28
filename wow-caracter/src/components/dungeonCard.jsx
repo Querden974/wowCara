@@ -9,7 +9,7 @@ function DungeonCard(){
         const accessToken = await getAccessToken('eu');
         const dungeons = await listDungeon(accessToken,'eu');
         setDungeons(dungeons);
-        console.log(dungeons)
+        //console.log(dungeons)
         
     }
     useEffect(() => {
