@@ -1,7 +1,7 @@
 // Fonction pour obtenir les images du personnage
-async function getCharacterApp(token, region, realm, name, locale) {
+async function getCharacterStats(token, region, realm, name, locale) {
   const baseUrl = `https://${region}.api.blizzard.com`;
-  const apiUrl = `${baseUrl}/profile/wow/character/${realm}/${name}/character-media?namespace=profile-${region}&locale=${locale}`;
+  const apiUrl = `${baseUrl}/profile/wow/character/${realm}/${name}/statistics?namespace=profile-${region}&locale=${locale}`;
 
   const response = await fetch(apiUrl, {
     method: "GET",
@@ -26,7 +26,8 @@ async function getCharacterApp(token, region, realm, name, locale) {
   }
 
   const characterApp = await response.json();
+  //console.log(characterApp);
   return characterApp;
 }
 
-export default getCharacterApp;
+export default getCharacterStats;

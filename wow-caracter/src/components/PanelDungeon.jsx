@@ -48,12 +48,12 @@ function DungeonCard({ data }) {
     });
   });
 
-  console.log(dungeons);
+  //console.log(dungeons);
   useEffect(() => {
     initDungeons();
   }, []);
   return (
-    <div className="relative lg:row-span-2">
+    <div className="relative lg:row-span-2 w-full">
       <div className="absolute inset-px rounded-lg bg-white max-lg:rounded-b-[2rem] lg:rounded-r-[2rem]"></div>
       <div
         id="dungeonPanel"
@@ -62,19 +62,21 @@ function DungeonCard({ data }) {
         <div className="flex flex-col p-8 gap-4 ">
           {dungeons.map((dungeons, index) => (
             <div key={dungeons.shortName} className="flex flex-row gap-2">
-              <img
-                id={dungeons.shortName + "-img"}
-                src={dungeons.img}
-                className={`w-[16%] aspect-square rounded-lg ${
-                  dungeons.difficulty ? "" : "saturate-0"
-                }`}
-              />
-              <p
-                id={dungeons.shortName + "-difficulty"}
-                className="text-4xl font-mono capitalize align relative right-11 top-1 text-slate-100"
-              >
-                {dungeons.difficulty}
-              </p>
+              <div className="w-20 grid grid-cols-1 grid-cols-min [&>*]:col-start-1 [&>*]:row-start-1 relative ">
+                <img
+                  id={dungeons.shortName + "-img"}
+                  src={dungeons.img}
+                  className={`w-full aspect-square rounded-lg ${
+                    dungeons.difficulty ? "" : "saturate-0"
+                  }`}
+                />
+                <p
+                  id={dungeons.shortName + "-difficulty"}
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl font-mono text-slate-100"
+                >
+                  {dungeons.difficulty}
+                </p>
+              </div>
 
               <div className="flex flex-col gap-2 w-full">
                 <p className="text-sm font-mono capitalize align font-semibold ">
