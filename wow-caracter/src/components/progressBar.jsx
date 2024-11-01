@@ -5,6 +5,42 @@ function ProgressBar() {
     heroic: "bg-heroic",
     mythic: "bg-mythic",
   };
+
+  // Gestion de la progrogression des raids
+  const nerubarPalace = rIO.raid_progression["nerubar-palace"];
+  //console.log(nerubarPalace);
+  const normal = document.getElementById("normal");
+  const heroic = document.getElementById("heroic");
+  const mythic = document.getElementById("mythic");
+  const progressBar = document.getElementById("progressBar");
+  progressBar.classList.remove("hidden");
+
+  const normalNerubar = Math.round(
+    (nerubarPalace.normal_bosses_killed / nerubarPalace.total_bosses) * 100
+  );
+  const heroicNerubar = Math.round(
+    (nerubarPalace.heroic_bosses_killed / nerubarPalace.total_bosses) * 100
+  );
+  const mythicNerubar = Math.round(
+    (nerubarPalace.mythic_bosses_killed / nerubarPalace.total_bosses) * 100
+  );
+  console.log(normalNerubar, heroicNerubar, mythicNerubar);
+  if (nerubarPalace.normal_bosses_killed !== 0) {
+    normal.style.width = `${normalNerubar}%`;
+  } else {
+    normal.style.display = `none`;
+  }
+  if (nerubarPalace.heroic_bosses_killed !== 0) {
+    heroic.style.width = `${heroicNerubar}%`;
+  } else {
+    heroic.style.display = `none`;
+  }
+  if (nerubarPalace.mythic_bosses_killed !== 0) {
+    mythic.style.width = `${mythicNerubar}%`;
+  } else {
+    mythic.style.display = `none`;
+  }
+
   return (
     <div id="progressBar" className=" flex-col h-fit relative top-2 hidden">
       <span

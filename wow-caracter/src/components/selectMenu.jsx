@@ -6,11 +6,17 @@ import getCharacterApp from "../functions/getCharacterApp";
 import ShowInfo from "../functions/showInfo";
 import getRaiderIO from "../functions/getRaiderIO";
 import listDungeon from "../functions/getDungeons";
-function SelectMenu({ changeRegion, changeRealm, changeName }) {
+
+function SelectMenu({
+  changeRegion,
+  changeRealm,
+  changeName,
+  changeCharacterData,
+}) {
   const [serverListExist, setServerListExist] = useState(null);
   const [servers, setServers] = useState([]);
   const [region, setRegion] = useState("eu");
-  const [server, setServer] = useState("hyjal");
+  const [server, setServer] = useState("Aegwynn");
   const [name, setName] = useState("");
   const [error, setError] = useState(null); // Gérer les erreurs
 
@@ -28,23 +34,28 @@ function SelectMenu({ changeRegion, changeRealm, changeName }) {
   }
 
   async function getInformations() {
-    //console.log(region, server, name);
-    const accessToken = await getAccessToken(region);
     if (name !== "") {
+      const accessToken = await getAccessToken(region);
       const [data, dataApp, dataRaiderIO, dataDungeons] = await Promise.all([
         getCharacterInfo(accessToken, region, server, name.toLowerCase()),
         getCharacterApp(accessToken, region, server, name.toLowerCase()),
         getRaiderIO(region, server, name.toLowerCase()),
         listDungeon(accessToken, region),
       ]);
-      //console.log(dataDungeons);
-      //console.log(dataRaiderIO);
+
+      const characterData = {
+        informations: data,
+        images: dataApp,
+        raiderIO: dataRaiderIO,
+        dungeons: dataDungeons,
+      };
 
       changeName(name);
       changeRegion(region);
       changeRealm(server);
+      changeCharacterData(characterData);
 
-      ShowInfo(name, data, dataApp, dataRaiderIO);
+      //ShowInfo(name, data, dataApp, dataRaiderIO);
     } else {
       Swal.fire({
         position: "center",
@@ -106,6 +117,11 @@ function SelectMenu({ changeRegion, changeRealm, changeName }) {
           placeholder="Personnage"
           value={name} // Lier l'input à l'état React
           onChange={(e) => setName(e.target.value)} // Mettre à jour l'état à chaque changement
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              getInformations();
+            }
+          }}
         />
 
         <button
@@ -122,4 +138,4 @@ function SelectMenu({ changeRegion, changeRealm, changeName }) {
   );
 }
 
-export default SelectDefault;
+export default SelectMenu;
