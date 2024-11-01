@@ -91,7 +91,7 @@ export default function PanelInfo({ name, server, data }) {
           <div id="characterTalents" className="flex w-full justify-center">
             <a
               href={`https://www.wowhead.com/talent-calc/blizzard/${data.raiderIO.talentLoadout.loadout_text}`}
-              class="text-base font-semibold m-6 group relative w-max"
+              className="text-base font-semibold m-6 group relative w-max"
               target="_blank"
             >
               <span className="flex items-center gap-2 px-1 relative z-10 group-hover:text-white">

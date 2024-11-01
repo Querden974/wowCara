@@ -111,7 +111,7 @@ function SelectMenu({
       changeRealm(server);
       changeCharacterData(characterData);
       changeAccessToken(accessToken);
-      console.log(characterData);
+      //console.log(characterData);
       document.title = `${name}-${
         server.at(0).toUpperCase() + server.slice(1)
       } [${region.toUpperCase()}] | Wow Character`;
