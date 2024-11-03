@@ -1,19 +1,15 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import Card from "./components/card";
-import SearchChar from "./components/searchChar";
+import { useState, useEffect } from "react";
+
 import "./index.css";
+
 import SelectMenu from "./components/selectMenu";
 import PanelInfo from "./components/PanelInfo";
 import PanelDungeon from "./components/PanelDungeon";
-import getCharacterInfo from "./functions/getCharacterInfo";
-import getCharacterApp from "./functions/getCharacterApp";
-import getAccessToken from "./functions/getAccessToken";
-import getRaiderIO from "./functions/getRaiderIO";
 import ProfileCard from "./components/ProfileCard";
 import HamburgerMenu from "./components/HamburgerMenu";
 import MobileBanner from "./components/MobileBanner";
+import getInformations from "./functions/GetInformations";
+
 function App() {
   const [count, setCount] = useState(0);
   const [region, setRegion] = useState("eu");
@@ -23,7 +19,6 @@ function App() {
   const [accessToken, setAccessToken] = useState("");
   const [locale, setLocale] = useState("en_GB");
   const [isOpen, setIsOpen] = useState(true);
-  //console.log(characterData);
 
   return (
     <>
@@ -54,6 +49,10 @@ function App() {
             locale={locale}
             isOpen={isOpen}
             changeIsOpen={setIsOpen}
+            name={name}
+            region={region}
+            realm={realm}
+            accessToken={accessToken}
           />
         </div>
         <div
