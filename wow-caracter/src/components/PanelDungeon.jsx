@@ -53,15 +53,15 @@ function DungeonCard({ data }) {
     initDungeons();
   }, []);
   return (
-    <div className="relative lg:row-span-2 w-full">
-      <div className="absolute inset-px rounded-lg bg-white max-lg:rounded-b-[2rem] lg:rounded-r-[2rem]"></div>
+    <div className="relative lg:row-span-2 w-full h-[clamp(40rem,80vh,45rem)]">
+      <div className="absolute inset-px rounded-lg bg-white sm:rounded-r-[2rem] w-full"></div>
       <div
         id="dungeonPanel"
-        className="relative flex h-full flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] max-lg:rounded-b-[calc(2rem+1px)] lg:rounded-r-[calc(2rem+1px)]"
+        className="relative flex w-full h-max flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] sm:rounded-r-[calc(2rem+1px)]"
       >
-        <div className="flex flex-col p-8 gap-4 ">
+        <div className="flex flex-col py-8 px-8 gap-[clamp(1rem,4.5dvh,1.2rem)] ">
           {dungeons.map((dungeons, index) => (
-            <div key={dungeons.shortName} className="flex flex-row gap-2">
+            <div key={dungeons.shortName} className="flex flex-row gap-3">
               <div className="w-20 grid grid-cols-1 grid-cols-min [&>*]:col-start-1 [&>*]:row-start-1 relative ">
                 <img
                   id={dungeons.shortName + "-img"}
@@ -70,36 +70,38 @@ function DungeonCard({ data }) {
                     dungeons.difficulty ? "" : "saturate-0"
                   }`}
                 />
-                <p
-                  id={dungeons.shortName + "-difficulty"}
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl font-mono text-slate-100"
-                >
-                  {dungeons.difficulty}
-                </p>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl font-mono text-slate-100">
+                  <p
+                    id={dungeons.shortName + "-difficulty"}
+                    className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl font-mono text-slate-100"
+                  >
+                    {dungeons.difficulty}
+                  </p>
+                  <p
+                    id={dungeons.shortName + "-upgrade"}
+                    className="text-xl sm:text-[clamp(0.5rem,1.5vw,1.5rem)] font-mono capitalize align relative top-4"
+                  >
+                    {dungeons.upgrade}
+                  </p>
+                </div>
               </div>
 
-              <div className="flex flex-col gap-2 w-full">
-                <p className="text-sm font-mono capitalize align font-semibold ">
+              <div className="flex flex-col w-full">
+                <p className=" text-lg sm:text-[clamp(0.1rem,1.2vw,1rem)] font-mono capitalize align font-semibold leading-none">
                   {dungeons.name.replace(/-/g, " ")}
                 </p>
-                <div className="grid grid-cols-3 items-center ">
+                <div className="grid grid-cols-2 justify-items-center ">
                   <p
                     id={dungeons.shortName + "-score"}
-                    className="text-sm font-mono capitalize align"
+                    className="text-md sm:text-[clamp(0.5rem,1.5vw,1.5rem)] font-mono capitalize align"
                   >
                     {dungeons.score}
                   </p>
                   <p
                     id={dungeons.shortName + "-timer"}
-                    className="text-sm font-mono capitalize align"
+                    className="text-md sm:text-[clamp(0.5rem,1.5vw,1.5rem)] font-mono capitalize align"
                   >
                     {dungeons.timer}
-                  </p>
-                  <p
-                    id={dungeons.shortName + "-upgrade"}
-                    className="text-sm font-mono capitalize align"
-                  >
-                    {dungeons.upgrade}
                   </p>
                 </div>
               </div>
@@ -107,7 +109,6 @@ function DungeonCard({ data }) {
           ))}
         </div>
       </div>
-      <div className="pointer-events-none absolute inset-px rounded-lg shadow ring-1 ring-black/5 max-lg:rounded-b-[2rem] lg:rounded-r-[2rem]"></div>
     </div>
   );
 }

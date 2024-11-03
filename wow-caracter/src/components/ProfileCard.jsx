@@ -23,9 +23,9 @@ export default function ProfileCard({ name, data }) {
   )?.value;
   return (
     <>
-      <div className="relative lg:row-span-2">
-        <div className="absolute inset-px rounded-lg bg-transparent lg:rounded-l-[2rem]"></div>
-        <div className="relative flex h-full flex-col  rounded-[calc(theme(borderRadius.lg)+1px)] lg:rounded-l-[calc(2rem+1px)]">
+      <div className="relative lg:row-span-2  sm:block hidden">
+        <div className="absolute inset-px rounded-lg bg-transparent sm:rounded-l-[2rem]"></div>
+        <div className="relative flex h-full flex-col  rounded-[calc(theme(borderRadius.lg)+1px)] sm:rounded-l-[calc(2rem+1px)]">
           <div id="characterRender" className="relative   h-[700px] ">
             <p
               id="nameMain"
@@ -44,7 +44,7 @@ export default function ProfileCard({ name, data }) {
 
             <div
               id="imageDiv"
-              className="flex justify-center items-center  h-[500px] "
+              className="flex justify-center items-center  h-[500px]  "
             >
               <img
                 id="imageRender"

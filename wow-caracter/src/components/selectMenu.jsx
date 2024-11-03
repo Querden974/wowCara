@@ -25,6 +25,8 @@ function SelectMenu({
   changeAccessToken,
   changeLocale,
   locale,
+  isOpen,
+  changeIsOpen,
 }) {
   const [serverListExist, setServerListExist] = useState(null);
   const [servers, setServers] = useState([]);
@@ -32,10 +34,6 @@ function SelectMenu({
   const [server, setServer] = useState("Aegwynn");
   const [name, setName] = useState("");
   const [error, setError] = useState(null); // Gérer les erreurs'
-
-  const [size, setSize] = useState(1);
-  const handleFocus = () => setSize(10);
-  const handleBlur = () => setSize(1);
 
   async function serverList() {
     const accessToken = await getAccessToken(region);
@@ -66,56 +64,69 @@ function SelectMenu({
   }
   async function getInformations() {
     if (name !== "") {
-      const accessToken = await getAccessToken(region);
-      const [data, dataApp, dataRaiderIO, dataDungeons, dataStats, spec] =
-        await Promise.all([
-          getCharacterInfo(
-            accessToken,
-            region,
-            server,
-            name.toLowerCase(),
-            locale
-          ),
-          getCharacterApp(
-            accessToken,
-            region,
-            server,
-            name.toLowerCase(),
-            locale
-          ),
-          getRaiderIO(region, server, name.toLowerCase()),
-          listDungeon(accessToken, region),
-          getCharacterStats(
-            accessToken,
-            region,
-            server,
-            name.toLowerCase(),
-            locale
-          ),
-          getSpec(accessToken, region, server, name.toLowerCase(), locale),
-        ]);
-      const mainStat = await getMainStat2(data, accessToken);
+      try {
+        const accessToken = await getAccessToken(region);
+        const [data, dataApp, dataRaiderIO, dataDungeons, dataStats, spec] =
+          await Promise.all([
+            getCharacterInfo(
+              accessToken,
+              region,
+              server,
+              name.toLowerCase(),
+              locale
+            ),
+            getCharacterApp(
+              accessToken,
+              region,
+              server,
+              name.toLowerCase(),
+              locale
+            ),
+            getRaiderIO(region, server, name.toLowerCase()),
+            listDungeon(accessToken, region),
+            getCharacterStats(
+              accessToken,
+              region,
+              server,
+              name.toLowerCase(),
+              locale
+            ),
+            getSpec(accessToken, region, server, name.toLowerCase(), locale),
+          ]);
+        const mainStat = await getMainStat2(data, accessToken);
 
-      const characterData = {
-        informations: data,
-        images: dataApp,
-        raiderIO: dataRaiderIO,
-        dungeons: dataDungeons,
-        stats: dataStats,
-        mainStat: mainStat,
-        spec: spec,
-      };
-      //console.log(mainStat);
-      changeName(name);
-      changeRegion(region);
-      changeRealm(server);
-      changeCharacterData(characterData);
-      changeAccessToken(accessToken);
-      //console.log(characterData);
-      document.title = `${name}-${
-        server.at(0).toUpperCase() + server.slice(1)
-      } [${region.toUpperCase()}] | Wow Character`;
-      //ShowInfo(name, data, dataApp, dataRaiderIO);
+        const characterData = {
+          informations: data,
+          images: dataApp,
+          raiderIO: dataRaiderIO,
+          dungeons: dataDungeons,
+          stats: dataStats,
+          mainStat: mainStat,
+          spec: spec,
+        };
+
+        changeName(name);
+        changeRegion(region);
+        changeRealm(server);
+        changeCharacterData(characterData);
+        changeAccessToken(accessToken);
+        if (isOpen) {
+          changeIsOpen(!isOpen);
+        }
+
+        document.title = `${name}-${
+          server.at(0).toUpperCase() + server.slice(1)
+        } [${region.toUpperCase()}] | Wow Character`;
+      } catch (error) {
+        console.error("Error fetching character information:", error);
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "An error occurred while fetching character information.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
     } else {
       Swal.fire({
         position: "center",
@@ -136,11 +147,17 @@ function SelectMenu({
   //console.log(region, locale, server, name);
 
   return (
-    <div className="flex justify-center items-center p-2">
-      <div className="flex justify-center gap-1 p-1 bg-gray-600  w-fit rounded-[calc(2rem+1px)] ">
+    <div
+      className={`flex justify-center items-center sm:p-2 w-full absolute sm:relative ease-in-out duration-200 ${
+        isOpen
+          ? "top-[120px] left-[1px] "
+          : "top-[120px] left-[-1px] -translate-x-[110dvw] sm:-translate-x-0"
+      }`}
+    >
+      <div className="flex flex-wrap sm:flex-nowrap justify-center gap-1 p-1 bg-gray-600 sm:w-fit w-full rounded-[calc(theme(borderRadius.lg)+1px)] sm:rounded-[calc(2rem+1px)] ">
         <select
           id="region"
-          className="h-12 border border-gray-300 text-gray-600 text-base block w-fit py-2.5 px-4 focus:outline-none rounded-[calc(theme(borderRadius.lg)+1px)] lg:rounded-l-[calc(2rem+1px)]"
+          className="h-12 border border-gray-300 text-gray-600 text-base block sm:w-24 w-full py-2.5 px-4 focus:outline-none rounded-[calc(theme(borderRadius.lg)+1px)] sm:rounded-l-[calc(2rem+1px)]"
           value={region}
           onChange={(e) => handleChangeLocale(e)}
         >
@@ -152,7 +169,7 @@ function SelectMenu({
 
         <select
           id="servers"
-          className="h-12  w-[210px] border border-gray-300 text-gray-600 text-base rounded-[calc(theme(borderRadius.lg)+1px)] overflow-auto py-2.5 px-4 focus:outline-none"
+          className="h-12 sm:w-48 w-full border border-gray-300 text-gray-600 text-base rounded-[calc(theme(borderRadius.lg)+1px)] overflow-auto py-2.5 px-4 focus:outline-none"
           value={server}
           onChange={(e) => {
             setServer(e.target.value.toLowerCase());
@@ -173,7 +190,7 @@ function SelectMenu({
 
         <input
           id="personnage"
-          className="h-12 w-[210px] border border-gray-300 text-gray-600 text-base rounded-[calc(theme(borderRadius.lg)+1px)] block  py-2.5 px-4 focus:outline-none"
+          className="h-12 sm:w-48 w-full border border-gray-300 text-gray-600 text-base rounded-[calc(theme(borderRadius.lg)+1px)] block  py-2.5 px-4 focus:outline-none"
           placeholder="Personnage"
           value={name} // Lier l'input à l'état React
           onChange={(e) => setName(e.target.value)} // Mettre à jour l'état à chaque changement
@@ -187,7 +204,7 @@ function SelectMenu({
         <button
           id="searchBtn"
           onClick={getInformations} // Appel de la fonction changeText lors du clic
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-[calc(theme(borderRadius.lg)+1px)] rounded-r-[calc(2rem+1px)]"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-[calc(theme(borderRadius.lg)+1px)] sm:rounded-r-[calc(2rem+1px)] sm:w-24 w-full "
         >
           <span className="material-symbols-outlined flex items-center justify-center stroke-2">
             search
