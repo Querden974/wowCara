@@ -7,10 +7,11 @@ export default function PanelInfo({ name, server, data }) {
     data.informations.character_class.name,
   ];
   const paramArray = [
-    ["Nom", name],
-    ["Serveur", server],
+    ["Nom", data.informations.name],
+    ["Serveur", data.informations.realm.name],
     ["Ilvl", ilvl],
     ["Classe", classe],
+    ["Raid"],
   ];
   const mainStat = data.mainStat.primary_stat_type.type.toLowerCase();
 
@@ -40,7 +41,7 @@ export default function PanelInfo({ name, server, data }) {
         <div className="relative flex w-full h-full flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] sm:rounded-l-[calc(2rem+1px)]">
           <div
             id="characterInfo"
-            className="px-8 pt-8 lg:px-10 lg:p-8 h-max w-full"
+            className="px-8 pt-8 lg:px-10 lg:pt-8 h-max w-full"
           >
             <div className="flow-root ">
               <p className="text-center text-xl font-bold mb-4">Informations</p>
@@ -57,14 +58,18 @@ export default function PanelInfo({ name, server, data }) {
                       id="nomPersonnage"
                       className="text-gray-700  capitalize text-center"
                     >
-                      {param[1]}
+                      {param[0] == "Raid" ? (
+                        <ProgressBar data={data} />
+                      ) : (
+                        param[1]
+                      )}
                     </dd>
                   </div>
                 ))}
               </dl>
             </div>
           </div>
-          <div id="characterStats" className="px-8 pt-8 lg:px-10 lg:p-8 h-max">
+          <div id="characterStats" className="px-8 pt-8 lg:px-10 lg:pt-8 h-max">
             <div className="flow-root ">
               <p className="text-center text-xl font-bold mb-4">Stats</p>
               <dl className="-my-3 divide-y divide-gray-100 text-sm">
@@ -93,7 +98,10 @@ export default function PanelInfo({ name, server, data }) {
               </dl>
             </div>
           </div>
-          <div id="characterTalents" className="flex w-full justify-center">
+          <div
+            id="characterTalents"
+            className="flex w-full justify-center pt-4"
+          >
             <a
               href={`https://www.wowhead.com/talent-calc/blizzard/${data.raiderIO.talentLoadout.loadout_text}`}
               className="text-base font-semibold m-6 group relative w-max"

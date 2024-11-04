@@ -7,8 +7,6 @@ import getMainStat2 from "../functions/getMainStat2";
 import getSpec from "../functions/getSpec";
 import getAccessToken from "../functions/getAccessToken";
 
-import { useEffect } from "react";
-
 export default async function getInformations(
   name,
   region,
@@ -17,10 +15,10 @@ export default async function getInformations(
   changeCharacterData,
   changeAccessToken,
   accessToken,
-  isOpen,
-  changeIsOpen,
   valid,
-  setValid
+  changeValid,
+  isOpen,
+  changeIsOpen
 ) {
   if (name !== "") {
     try {
@@ -68,11 +66,7 @@ export default async function getInformations(
 
       changeCharacterData(characterData);
 
-      if (isOpen) {
-        changeIsOpen(!isOpen);
-      }
-
-      document.title = `${name}-${
+      document.title = `${characterData.informations.name}-${
         server.at(0).toUpperCase() + server.slice(1)
       } [${region.toUpperCase()}] | Wow Character`;
     } catch (error) {
@@ -87,16 +81,6 @@ export default async function getInformations(
           timer: 1500,
         });
       }
-    }
-  } else {
-    if (!valid) {
-      Swal.fire({
-        position: "center",
-        icon: "error",
-        title: "Veuillez entrer un nom de personnage.",
-        showConfirmButton: false,
-        timer: 1500,
-      });
     }
   }
 }

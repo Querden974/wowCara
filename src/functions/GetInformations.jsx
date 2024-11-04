@@ -83,17 +83,18 @@ export default function useGetInformations(
             });
           }
         }
-      } else {
-        if (!valid) {
-          Swal.fire({
-            position: "center",
-            icon: "error",
-            title: "Veuillez entrer un nom de personnage.",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
       }
+      //else {
+      //   if (!valid) {
+      //     Swal.fire({
+      //       position: "center",
+      //       icon: "error",
+      //       title: "Veuillez entrer un nom de personnage.",
+      //       showConfirmButton: false,
+      //       timer: 1500,
+      //     });
+      //   }
+      // }
     }
 
     fetchData();

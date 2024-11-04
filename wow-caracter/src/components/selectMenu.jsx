@@ -18,10 +18,13 @@ function SelectMenu({
   region,
   realm,
   accessToken,
+  valid,
+  changeValid,
 }) {
   const [serverListExist, setServerListExist] = useState(null);
   const [servers, setServers] = useState([]);
-  const [valid, setValid] = useState(false);
+
+  const [entryName, setEntryName] = useState("");
 
   const [error, setError] = useState(null); // Gérer les erreurs'
 
@@ -53,27 +56,9 @@ function SelectMenu({
     changeRealm(e.target.value);
   }
   function handleSearch() {
-    getInformations(
-      name,
-      region,
-      realm,
-      locale,
-      changeCharacterData,
-      changeAccessToken,
-      accessToken,
-      isOpen,
-      changeIsOpen
-    );
-  }
-  useEffect(() => {
-    serverList();
-    const params = new URLSearchParams(window.location.search);
-    if (params.toString().length > 0) {
-      changeName(params.get("name"));
-      changeRegion(params.get("region"));
-      changeRealm(params.get("realm"));
-      changeLocale(params.get("locale"));
-      setValid(true);
+    setEntryName(name);
+    if (name !== "") {
+      changeValid(true);
       getInformations(
         name,
         region,
@@ -85,10 +70,63 @@ function SelectMenu({
         isOpen,
         changeIsOpen,
         valid,
-        setValid
+        changeValid
       );
+      const nextURL = `?name=${name}&realm=${realm}&region=${region}&locale=${locale}`;
+      const nextTitle = `${name}-${
+        realm.at(0).toUpperCase() + realm.slice(1)
+      } [${region.toUpperCase()}] | Wow Character`;
+      window.history.pushState({}, nextTitle, nextURL);
+      window.history.replaceState({}, nextTitle, nextURL);
+
+      if (isOpen) {
+        changeIsOpen(false);
+      }
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Veuillez entrer un nom de personnage.",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
-  });
+  }
+  useEffect(() => {
+    serverList();
+    const params = new URLSearchParams(window.location.search);
+    if (params.toString().length > 0) {
+      const paramName = params.get("name");
+      const paramRegion = params.get("region");
+      const paramRealm = params.get("realm");
+      const paramLocale = params.get("locale");
+
+      if (paramName && paramRegion && paramRealm && paramLocale) {
+        changeName(paramName);
+        changeRegion(paramRegion);
+        changeRealm(paramRealm);
+        changeLocale(paramLocale);
+
+        if (isOpen) {
+          changeIsOpen(false);
+        }
+
+        getInformations(
+          paramName,
+          paramRegion,
+          paramRealm,
+          paramLocale,
+          changeCharacterData,
+          changeAccessToken,
+          accessToken,
+          valid,
+          changeValid,
+          isOpen,
+          changeIsOpen
+        );
+      }
+    }
+  }, [accessToken]);
 
   return (
     <div
@@ -139,7 +177,6 @@ function SelectMenu({
           value={name} // Lier l'input à l'état React
           onChange={(e) => {
             changeName(e.target.value);
-            //console.log(name);
           }} // Mettre à jour l'état à chaque changement
           onKeyDown={(e) => {
             if (e.key === "Enter") {

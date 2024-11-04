@@ -9,6 +9,7 @@ import ProfileCard from "./components/ProfileCard";
 import HamburgerMenu from "./components/HamburgerMenu";
 import MobileBanner from "./components/MobileBanner";
 import getInformations from "./functions/GetInformations";
+import getAccessToken from "./functions/getAccessToken";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -19,7 +20,35 @@ function App() {
   const [accessToken, setAccessToken] = useState("");
   const [locale, setLocale] = useState("en_GB");
   const [isOpen, setIsOpen] = useState(true);
+  const [valid, setValid] = useState(false);
 
+  if (accessToken === "") {
+    async () => {
+      setRegion("eu");
+
+      setAccessToken(await getAccessToken(region));
+      //console.log(accessToken);
+    };
+  }
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.toString().length > 0) {
+      const paramName = params.get("name");
+      const paramRegion = params.get("region");
+      const paramRealm = params.get("realm");
+      const paramLocale = params.get("locale");
+
+      if (paramName && paramRegion && paramRealm && paramLocale) {
+        setName(paramName.toLowerCase());
+        setRegion(paramRegion.toLowerCase());
+        setRealm(paramRealm.toLowerCase());
+        setLocale(paramLocale);
+        setValid(true);
+      }
+    }
+  }, [accessToken]);
+  //console.log(characterData);
   return (
     <>
       <div className="h-full w-full px-[calc(clamp(1rem,5vw,5rem))] flex flex-col justify-center items-center">
@@ -53,6 +82,8 @@ function App() {
             region={region}
             realm={realm}
             accessToken={accessToken}
+            valid={valid}
+            changeValid={setValid}
           />
         </div>
         <div

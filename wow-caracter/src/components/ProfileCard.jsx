@@ -23,20 +23,20 @@ export default function ProfileCard({ name, data }) {
   )?.value;
   return (
     <>
-      <div className="relative lg:row-span-2  sm:block hidden">
+      <div className="relative lg:row-span-2  sm:block hidden p-5">
         <div className="absolute inset-px rounded-lg bg-transparent sm:rounded-l-[2rem]"></div>
         <div className="relative flex h-full flex-col  rounded-[calc(theme(borderRadius.lg)+1px)] sm:rounded-l-[calc(2rem+1px)]">
           <div id="characterRender" className="relative   h-[700px] ">
             <p
               id="nameMain"
-              className="flex  text-4xl font-bold justify-center  font-mono "
+              className="flex  text-4xl font-bold justify-center  font-mono relative z-10"
               style={{ color: colors[classe] }}
             >
-              {name}
+              {data.informations.name}
             </p>
             <p
               id="guildMain"
-              className="flex  text-1xl font-bold justify-center   font-mono"
+              className="flex  text-1xl font-bold justify-center font-mono relative z-10"
               style={{ color: colors[classe] }}
             >
               {`< ${guilde} >`}
@@ -48,7 +48,7 @@ export default function ProfileCard({ name, data }) {
             >
               <img
                 id="imageRender"
-                className="  object-cover w-[600px] h-[900px]  -top-10 z-0 "
+                className="  object-cover overflow-visible  h-[60dvw]  -top-10 z-0 "
                 src={imageSrc}
                 alt="imageRender"
               />

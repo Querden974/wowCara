@@ -42,7 +42,7 @@ export default function MobileBanner({ name, data }) {
             className="flex  text-4xl font-bold justify-center capitalize font-mono "
             style={{ color: colors[classe] }}
           >
-            {name}
+            {data.informations.name}
           </p>
           <p
             id="guildMain"
